@@ -1,0 +1,330 @@
+@charset "utf-8";
+
+/*============================================================
+# mixins
+=============================================================*/
+
+//ブレークポイント
+$layout-width-inner: 1200px;
+$breakpoints: (
+  'sp': '(max-width: 767px)', //767px以下（スマホ）用の表示
+  'md': '(min-width: 768px)',//767px以上
+  'm': '(max-width: 1200px)',
+) ;
+
+//メディアクエリ
+@mixin mq($breakpoint: sp) {
+      @media #{map-get($breakpoints, $breakpoint)} {
+        @content;
+      }
+}
+
+/*============================================================
+# colors
+=============================================================*/
+
+$primary-color: #f3f3f3;
+$font-color: #333;
+
+/*============================================================
+# common -全体に共通するスタイル
+=============================================================*/
+  @include mq('sp') {
+    .is-pc {
+      display: none;
+    }
+  }
+
+  @include mq('md') {
+    .is-sp {
+      display: none;
+    }  
+  }
+
+  body {
+    font-size: 16px;
+    color: $font-color;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    line-height: 1.6875;
+    background: #fff;
+  }
+
+  img {
+    width: 100%;
+    
+  }
+
+
+  a {
+    color: $font-color;
+  }
+
+  .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px; //横幅が1200px以下の時の余白
+
+      @include mq('sp') {
+        padding: 0;
+    }
+    box-sizing: content-box;//横幅にpaddingを含めない
+  }
+
+
+ /*title
+=============================================================*/
+.title {
+  text-align: center;
+  line-height: 1;
+  background: $primary-color;
+  padding: 20px 0;
+
+  h1 {
+    font-size: 55px;
+    font-weight: bold;
+    padding-bottom: 20px;
+
+    @include mq('sp') {
+      font-size: 24px;
+      padding-bottom: 10px;
+    }
+  }
+
+  h2 {
+      @include mq('sp') {
+        font-size: 12px;
+      }
+  }
+}  
+
+/*content
+=============================================================*/  
+
+.content {
+  display: flex;
+  @include mq('sp') {
+    width: 100%;
+    display: block;
+  }
+}
+
+ /* drawer
+=============================================================*/
+// .drawer-hamburger {
+//   background-color: #fff;
+// }
+  
+/* sidebar
+=============================================================*/
+
+
+  .sidebar {
+    background: #fff;
+    margin-left: 30px;
+    padding: 20px 20px 0; //横幅が1200px以下の時の余白
+    box-sizing: content-box;//横幅にpaddingを含めない 
+    width: 250px;   
+    order: 2;
+    border-radius: 10px;
+    font-size: 20px;
+    height: 600px;
+
+    @include mq('sp') {
+      padding: 0;
+      margin: 0;
+      height: 0;
+    }
+  }
+
+
+  .sidebar-inner {
+    display: flex;
+    flex-flow: column;
+  }
+
+  .sidebar-logo {
+    margin: 0 auto;
+    text-align: center;
+
+    @include mq('sp') {
+      margin-top: 20px;
+    }
+  }
+
+  .profile-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: none;
+
+      @include mq('sp') {
+        width: 100px;
+        height: 100px;
+      }
+  }
+
+  .sidebar-nav-list {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+  
+
+  .sidebar-nav-item {
+    display: block;
+    margin-top: 20px;
+    letter-spacing: .1em;//0.1文字分
+
+    a {
+      color: $font-color;
+    }
+  }
+
+ /* categories
+=============================================================*/
+
+.categories {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.category-list {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+.category-list-item {
+  text-align: left;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+
+ /* new-entry
+=============================================================*/
+
+.new-entry-list {
+  display: inline-block;
+}
+
+.new-entry-list-item {
+  text-align: left;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+
+ /* main
+=============================================================*/
+
+.main {
+  width: 880px;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 50px;
+    @include mq('sp') {
+      width: 100%;
+  }
+}
+
+.blog {
+  margin: 0 auto;
+  width: 100%;
+  margin-top: 30px;
+  padding-bottom: 100px;
+
+    @include mq('sp') {
+      padding: 10px;
+      margin-top: 0;
+    }
+}
+
+.blog-list {
+  padding: 0 5px;
+  box-shadow: 0 0 4px #888;
+  & + & {
+    margin-top: 50px;
+  }
+}
+
+.blog-title {
+  font-size: 24px;
+}
+
+
+.blog-img {
+  width: 100%;
+  margin: 0 auto 30px;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.blog-content {
+  font-size: 18px;
+  line-height: 1.8em;
+}
+
+.blog-data {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  font-size: 14px;
+}
+
+.blog-category {
+  display: flex;
+}
+
+
+ /* footer
+=============================================================*/
+
+footer {
+  background: #f7f7f7;
+  padding: 0px 40px 12px;
+}
+
+.footer-logo {
+  width: 120px;
+  margin: 0 auto;
+}
+
+.footer-nav-list {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.footer-nav-item {
+  & + & {
+    margin-left: 30px;
+  }
+}
+
+.footer-nav-item-link {
+  font-size: 12px;
+  color: $font-color;
+  display: block;//リンクはブロックにする
+  padding: 1em 0;//クリック領域は44pxが望ましい
+}
+
+.footer-sns-list {
+  text-align: center;
+}
+
+.footer-sns-link {
+  color: $font-color;
+  font-size: 24px;
+  display: block;
+  padding: .1em .5em;
+}
+
+.footer-copyright {
+  color: #888;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px; 
+}
+
