@@ -23,7 +23,7 @@ $breakpoints: (
 # colors
 =============================================================*/
 
-$primary-color: #f3f3f3;
+$primary-color: #f2f2f2;
 $font-color: #333;
 
 /*============================================================
@@ -40,6 +40,9 @@ $font-color: #333;
       display: none;
     }  
   }
+
+
+
 
   body {
     font-size: 16px;
@@ -78,11 +81,13 @@ $font-color: #333;
   line-height: 1;
   background: $primary-color;
   padding: 20px 0;
+  
 
   h1 {
     font-size: 55px;
     font-weight: bold;
     padding-bottom: 20px;
+    
 
     @include mq('sp') {
       font-size: 24px;
@@ -108,12 +113,6 @@ $font-color: #333;
   }
 }
 
- /* drawer
-=============================================================*/
-// .drawer-hamburger {
-//   background-color: #fff;
-// }
-  
 /* sidebar
 =============================================================*/
 
@@ -121,13 +120,14 @@ $font-color: #333;
   .sidebar {
     background: #fff;
     margin-left: 30px;
+    margin-bottom: 30px;
     padding: 20px 20px 0; //横幅が1200px以下の時の余白
     box-sizing: content-box;//横幅にpaddingを含めない 
     width: 250px;   
     order: 2;
     border-radius: 10px;
     font-size: 20px;
-    height: 600px;
+    height: auto;
 
     @include mq('sp') {
       padding: 0;
@@ -155,13 +155,20 @@ $font-color: #333;
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    object-fit: none;
+    object-fit: cover;//縦横比を保持したまま画像の中央でトリミング
+    object-position: 100% 0;
 
       @include mq('sp') {
         width: 100px;
         height: 100px;
       }
   }
+
+  .sidebar-nav {
+    height: 100%;
+    overflow: auto;//fixedで固定しててもスクロールさせる
+    -webkit-overflow-scrolling: touch;
+   }
 
   .sidebar-nav-list {
     display: flex;
@@ -177,6 +184,27 @@ $font-color: #333;
 
     a {
       color: $font-color;
+
+      //hoverした時に左から右へアンダーライン
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: #333;
+        transform: scale(0, 1);
+        transform-origin: left top;
+        transition: transform .3s;
+      }
+
+      &:hover::after {
+        transform: scale(1, 1);
+      }
     }
   }
 
@@ -194,9 +222,16 @@ $font-color: #333;
 }
 
 .category-list-item {
-  text-align: left;
   font-size: 16px;
   opacity: 0.8;
+
+  &:not(:last-child) { //最後の要素以外
+    margin-bottom: 3px;
+  }
+
+  &:hover {
+    opacity: 0.3;
+  }
 }
 
 
@@ -211,6 +246,15 @@ $font-color: #333;
   text-align: left;
   font-size: 16px;
   opacity: 0.8;
+
+  &:not(:last-child) { //最後の要素以外
+    margin-bottom: 3px;
+  }
+
+
+  &:hover {
+    opacity: 0.3;
+  }
 }
 
 
@@ -222,8 +266,17 @@ $font-color: #333;
   background: #fff;
   border-radius: 10px;
   margin-bottom: 50px;
+  height: auto;
+
+  //profileの時、画面中央
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+
     @include mq('sp') {
       width: 100%;
+      min-height: 650px;
   }
 }
 
@@ -231,7 +284,6 @@ $font-color: #333;
   margin: 0 auto;
   width: 100%;
   margin-top: 30px;
-  padding-bottom: 100px;
 
     @include mq('sp') {
       padding: 10px;
@@ -240,10 +292,21 @@ $font-color: #333;
 }
 
 .blog-list {
-  padding: 0 5px;
+  padding: 0 20px;
   box-shadow: 0 0 4px #888;
   & + & {
     margin-top: 50px;
+  }
+
+    transition: 1s;
+
+  &:hover {
+    box-shadow: 0 10px 30px 0 rgba(0,0,0,.15);
+    background: $primary-color;
+  }
+
+  &:hover figure::after {
+    background: rgba(19,39,47,.6);
   }
 }
 
@@ -256,6 +319,22 @@ $font-color: #333;
   width: 100%;
   margin: 0 auto 30px;
 
+  figure {
+    position: relative;
+    overflow: hidden;
+  }
+
+  figure::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: .3s;
+  }
+
   img {
     max-width: 100%;
     max-height: 100%;
@@ -265,16 +344,91 @@ $font-color: #333;
 .blog-content {
   font-size: 18px;
   line-height: 1.8em;
+  padding-bottom: 30px;
 }
 
 .blog-data {
-  margin-top: 20px;
+  padding-top: 20px;
   padding-bottom: 20px;
   font-size: 14px;
 }
 
 .blog-category {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.blog-category-name:nth-of-type(n + 2) {
+  margin-left: 5px;
+
+}
+
+
+  @include mq('sp') {
+
+    .blog-category-title {
+      width: 35%;
+    }
+    
+    .blog-category-name {
+      width: 65%;
+    }
+    
+    .blog-category-name:nth-of-type(n + 2) {
+      margin-left: 35%;
+    
+    }
+
+ } 
+
+
+/*============================================================
+  pagination
+=============================================================*/
+.pagination {
+  margin: 60px auto 90px;
+  padding: 10px 0;
+  text-align: center
+}
+
+.pagination a {
+  font-size: 9pt;
+  line-height: 35px;
+  text-align: center;
+  letter-spacing: 0;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background: #fff;
+  transition: .3s;
+  color: #000;
+}
+
+.pagination a:hover {
+  color: #FFF;
+  background: #323232;
+}
+
+.pagination span {
+  font-size: 9pt;
+  line-height: 35px;
+  text-align: center;
+  letter-spacing: 0;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background: #f3f3f3
+}
+
+.pagination span.dots {
+  background: 0
+}
+
+.pagination span.current {
+  background: #323232;
+  color: #fff
 }
 
 
@@ -319,6 +473,13 @@ footer {
   font-size: 24px;
   display: block;
   padding: .1em .5em;
+
+i {
+  &:hover {
+    opacity: 0.3;
+  }
+}
+
 }
 
 .footer-copyright {
@@ -328,3 +489,72 @@ footer {
   margin-top: 10px; 
 }
 
+/* profile
+=============================================================*/
+
+.profile {
+
+  text-align: center;
+  
+}
+
+.profile-title {
+  font-size: 28px;
+  margin-bottom: 50px;
+}
+
+.profile_name {
+  font-size: 38px;
+  margin-bottom: 30px;
+}
+
+
+ /* topへ戻るボタン
+=============================================================*/
+
+#page_top{
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background: #000;
+  opacity: 0.6;
+  border-radius: 50%;
+  }
+#page_top a{
+  position: relative;
+  display: block;
+  width: 50px;
+  height: 50px;
+  text-decoration: none;
+}
+#page_top a::before{
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f062';
+  font-size: 25px;
+  color: #fff;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 5px;
+  right: 0;
+  left: 0;
+  margin: auto;
+  text-align: center;
+}
+
+/*スクロールしたら一度だけフェードイン
+=============================================================*/
+.fadeInUpTriggerOnce{
+  opacity:0;
+}
+
+
+.nav-inner {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

@@ -55,7 +55,7 @@ a {
 .title {
   text-align: center;
   line-height: 1;
-  background: #f3f3f3;
+  background: #f2f2f2;
   padding: 20px 0;
 }
 
@@ -100,6 +100,7 @@ a {
 .sidebar {
   background: #fff;
   margin-left: 30px;
+  margin-bottom: 30px;
   padding: 20px 20px 0;
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
@@ -109,7 +110,7 @@ a {
           order: 2;
   border-radius: 10px;
   font-size: 20px;
-  height: 600px;
+  height: auto;
 }
 
 @media (max-width: 767px) {
@@ -145,8 +146,10 @@ a {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  -o-object-fit: none;
-     object-fit: none;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 100% 0;
+     object-position: 100% 0;
 }
 
 @media (max-width: 767px) {
@@ -154,6 +157,12 @@ a {
     width: 100px;
     height: 100px;
   }
+}
+
+.sidebar-nav {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sidebar-nav-list {
@@ -177,6 +186,31 @@ a {
 
 .sidebar-nav-item a {
   color: #333;
+  position: relative;
+  display: inline-block;
+}
+
+.sidebar-nav-item a::after {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: #333;
+  -webkit-transform: scale(0, 1);
+          transform: scale(0, 1);
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s;
+}
+
+.sidebar-nav-item a:hover::after {
+  -webkit-transform: scale(1, 1);
+          transform: scale(1, 1);
 }
 
 /* categories
@@ -192,9 +226,16 @@ a {
 }
 
 .category-list-item {
-  text-align: left;
   font-size: 16px;
   opacity: 0.8;
+}
+
+.category-list-item:not(:last-child) {
+  margin-bottom: 3px;
+}
+
+.category-list-item:hover {
+  opacity: 0.3;
 }
 
 /* new-entry
@@ -209,6 +250,14 @@ a {
   opacity: 0.8;
 }
 
+.new-entry-list-item:not(:last-child) {
+  margin-bottom: 3px;
+}
+
+.new-entry-list-item:hover {
+  opacity: 0.3;
+}
+
 /* main
 =============================================================*/
 .main {
@@ -216,11 +265,23 @@ a {
   background: #fff;
   border-radius: 10px;
   margin-bottom: 50px;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: auto;
 }
 
 @media (max-width: 767px) {
   .main {
     width: 100%;
+    min-height: 650px;
   }
 }
 
@@ -228,7 +289,6 @@ a {
   margin: 0 auto;
   width: 100%;
   margin-top: 30px;
-  padding-bottom: 100px;
 }
 
 @media (max-width: 767px) {
@@ -239,13 +299,25 @@ a {
 }
 
 .blog-list {
-  padding: 0 5px;
+  padding: 0 20px;
   -webkit-box-shadow: 0 0 4px #888;
           box-shadow: 0 0 4px #888;
+  -webkit-transition: 1s;
+  transition: 1s;
 }
 
 .blog-list + .blog-list {
   margin-top: 50px;
+}
+
+.blog-list:hover {
+  -webkit-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
+          box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
+  background: #f2f2f2;
+}
+
+.blog-list:hover figure::after {
+  background: rgba(19, 39, 47, 0.6);
 }
 
 .blog-title {
@@ -257,6 +329,23 @@ a {
   margin: 0 auto 30px;
 }
 
+.blog-img figure {
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-img figure::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
 .blog-img img {
   max-width: 100%;
   max-height: 100%;
@@ -265,10 +354,11 @@ a {
 .blog-content {
   font-size: 18px;
   line-height: 1.8em;
+  padding-bottom: 30px;
 }
 
 .blog-data {
-  margin-top: 20px;
+  padding-top: 20px;
   padding-bottom: 20px;
   font-size: 14px;
 }
@@ -277,6 +367,74 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.blog-category-name:nth-of-type(n + 2) {
+  margin-left: 5px;
+}
+
+@media (max-width: 767px) {
+  .blog-category-title {
+    width: 35%;
+  }
+  .blog-category-name {
+    width: 65%;
+  }
+  .blog-category-name:nth-of-type(n + 2) {
+    margin-left: 35%;
+  }
+}
+
+/*============================================================
+  pagination
+=============================================================*/
+.pagination {
+  margin: 60px auto 90px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.pagination a {
+  font-size: 9pt;
+  line-height: 35px;
+  text-align: center;
+  letter-spacing: 0;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background: #fff;
+  -webkit-transition: .3s;
+  transition: .3s;
+  color: #000;
+}
+
+.pagination a:hover {
+  color: #FFF;
+  background: #323232;
+}
+
+.pagination span {
+  font-size: 9pt;
+  line-height: 35px;
+  text-align: center;
+  letter-spacing: 0;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background: #f3f3f3;
+}
+
+.pagination span.dots {
+  background: 0;
+}
+
+.pagination span.current {
+  background: #323232;
+  color: #fff;
 }
 
 /* footer
@@ -323,9 +481,79 @@ footer {
   padding: .1em .5em;
 }
 
+.footer-sns-link i:hover {
+  opacity: 0.3;
+}
+
 .footer-copyright {
   color: #888;
   font-size: 12px;
   text-align: center;
   margin-top: 10px;
+}
+
+/* profile
+=============================================================*/
+.profile {
+  text-align: center;
+}
+
+.profile-title {
+  font-size: 28px;
+  margin-bottom: 50px;
+}
+
+.profile_name {
+  font-size: 38px;
+  margin-bottom: 30px;
+}
+
+/* topへ戻るボタン
+=============================================================*/
+#page_top {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background: #000;
+  opacity: 0.6;
+  border-radius: 50%;
+}
+
+#page_top a {
+  position: relative;
+  display: block;
+  width: 50px;
+  height: 50px;
+  text-decoration: none;
+}
+
+#page_top a::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f062';
+  font-size: 25px;
+  color: #fff;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 5px;
+  right: 0;
+  left: 0;
+  margin: auto;
+  text-align: center;
+}
+
+/*スクロールしたら一度だけフェードイン
+=============================================================*/
+.fadeInUpTriggerOnce {
+  opacity: 0;
+}
+
+.nav-inner {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
